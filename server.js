@@ -3,9 +3,12 @@ const cors = require("cors")
 const morgan = require("morgan")
 const colors = require("colors")
 const dotenv = require("dotenv")
+const connectDB = require("./config/connectDB")
 
 //env config
 dotenv.config()
+
+connectDB()
 
 //rest object
 const app = express()
@@ -25,5 +28,5 @@ app.get('/',(req,res) => {
 const PORT = process.env.PORT || 8080
 //listen
 app.listen(PORT, () => {
-    console.log(`server running ${process.env.DEV_MODE} on port ${PORT}`.bgCyan.white)
+    console.log(`server running ${process.env.DEV_MODE} on port ${PORT}`.underline.green)
 })
