@@ -12,7 +12,11 @@ const userSchema = new mongoose.Schema({
     password:{
         type: String,
         required: [true, 'password is required']
-    }
+    },
+    blogs:[{
+        type: mongoose.Types.ObjectId,
+        ref:'Blog'
+    }]
 }, {timestamps: true})
 
 const UserModel = mongoose.model('User', userSchema)
