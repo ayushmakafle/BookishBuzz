@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import BlogCard from '../components/BlogCard';
 
+// ...
+
 const UserBlog = () => {
   const [blogs, setBlogs] = useState([]);
 
@@ -10,10 +12,10 @@ const UserBlog = () => {
     try {
       const id = localStorage.getItem('userId');
       const { data } = await axios.get(`/api/v1/blog/user-blog/${id}`);
-      console.log(data);
 
       if (data?.success) {
-        setBlogs(data?.userBlog || []); // Ensure to default to an empty array if data.userBlog is undefined
+        // Update the line below to correctly access the blogs from the user object
+        setBlogs(data?.userBlog?.blogs || []); 
       }
     } catch (error) {
       console.log(error);
@@ -30,7 +32,7 @@ const UserBlog = () => {
 
   return (
     <div>
-      {blogs.length > 0 ? (
+      {blogs && blogs.length > 0 ? (
         blogs.map((blog) => (
           <BlogCard
             key={blog._id}
@@ -49,3 +51,4 @@ const UserBlog = () => {
 };
 
 export default UserBlog;
+
