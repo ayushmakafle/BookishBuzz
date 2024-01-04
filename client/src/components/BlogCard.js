@@ -1,40 +1,23 @@
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
+// BlogCard.js
+import React from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import moment from 'moment';
 
-import moment from 'moment'
-
-
-export default function BlogCard({title,description,image,username,time}) {
-
-const formattedDate = moment(`${time}`, 'YYYY-MM-DDTHH:mm:ss.SSSZ').format('YYYY-MM-DD HH:mm');
-
+const BlogCard = ({ title, description, image, username, time }) => {
+  const formattedDate = moment(time).format('YYYY-MM-DD HH:mm:ss');
 
   return (
-    <Card sx={{ width: '40%', margin:'auto',mt:2,passing:2,boxShadow:'5px 5px 10px #ccc',':hover:':{boxShadow:'10px 10px 20px #ccc'} }}>
+    <Card sx={{ width: '40%', margin: 'auto', mt: 2, padding: 2, boxShadow: '5px 5px 10px #ccc', ':hover:': { boxShadow: '10px 10px 20px #ccc' } }}>
       <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            {username}
-          </Avatar>
-        }
-        /* action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        } */
+        avatar={<Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">{username}</Avatar>}
         title={username}
-        subheader={formattedDate.toString()}
+        subheader={formattedDate}
       />
       <CardMedia
         component="img"
@@ -50,7 +33,8 @@ const formattedDate = moment(`${time}`, 'YYYY-MM-DDTHH:mm:ss.SSSZ').format('YYYY
           {description}
         </Typography>
       </CardContent>
-      
     </Card>
   );
-}
+};
+
+export default BlogCard;
