@@ -1,4 +1,3 @@
-// UserBlog.js
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -25,10 +24,10 @@ const UserBlog = () => {
   }, []);
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      <div style={{ textAlign: 'center', marginRight: blogs.length > 0 ? '20px' : '0' }}>
-        {blogs && blogs.length > 0 ? (
-          blogs.map((blog) => (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      {blogs && blogs.length > 0 ? (
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+          {blogs.map((blog) => (
             <SingleBlogCard
               key={blog._id}
               id={blog._id}
@@ -36,23 +35,22 @@ const UserBlog = () => {
               title={blog.title}
               description={blog.description}
               image={blog.image && blog.image.dataUri}
-
               username={blog.user.username}
               time={blog.createdAt}
             />
-          ))
-        ) : (
-          <div>
-            <h2>You don't have any blogs</h2>
-            <p style={{ marginBottom: '20px', marginTop: '10px' }}>We would love to read your thoughts on books!</p>
-            <Link to="/create-blog">
-              <button style={{ padding: '10px 20px', fontSize: '16px', backgroundColor: '#f8408f', color: 'white', borderRadius: '5px', cursor: 'pointer' }}>
-                Create a Blog Now
-              </button>
-            </Link>
-          </div>
-        )}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <div style={{ textAlign: 'center' }}>
+          <h2>You don't have any blogs</h2>
+          <p style={{ marginBottom: '20px', marginTop: '10px' }}>We would love to read your thoughts on books!</p>
+          <Link to="/create-blog">
+            <button style={{ padding: '10px 20px', fontSize: '16px', backgroundColor: '#f8408f', color: 'white', borderRadius: '5px', cursor: 'pointer' }}>
+              Create a Blog Now
+            </button>
+          </Link>
+        </div>
+      )}
       {!blogs || blogs.length === 0 && (
         <div style={{ textAlign: 'left', marginLeft: blogs.length > 0 ? '20px' : '0' }}>
           <img
