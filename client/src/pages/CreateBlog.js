@@ -10,7 +10,7 @@ const CreateBlog = () => {
   const [inputs, setInputs] = useState({
     title: "",
     description: "",
-    image: "",
+    image: null, // Initialize as null
   });
 
   // Input change
@@ -21,16 +21,31 @@ const CreateBlog = () => {
     }));
   };
 
+  // File input change
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setInputs((prevState) => ({
+      ...prevState,
+      image: file,
+    }));
+  };
+
   // Form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post("/api/v1/blog/create-blog", {
-        title: inputs.title,
-        description: inputs.description,
-        image: inputs.image,
-        user: id,
+      const formData = new FormData();
+      formData.append("title", inputs.title);
+      formData.append("description", inputs.description);
+      formData.append("image", inputs.image);
+      formData.append("user", id);
+
+      const { data } = await axios.post("/api/v1/blog/create-blog", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
+
       if (data?.success) {
         toast.success("Blog Created");
         navigate("/my-blogs");
@@ -69,12 +84,11 @@ const CreateBlog = () => {
           name="title"
           value={inputs.title}
           onChange={handleChange}
-          
           variant="outlined"
           required
           sx={{
             "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#f8408f", // Pink border when selected
+              borderColor: "#f8408f",
             },
           }}
         />
@@ -85,7 +99,6 @@ const CreateBlog = () => {
           name="description"
           value={inputs.description}
           onChange={handleChange}
-          
           variant="outlined"
           required
           sx={{
@@ -97,26 +110,19 @@ const CreateBlog = () => {
         <InputLabel sx={{ mb: 1, mt: 2, fontSize: "20px", fontWeight: "bold", color: "#f8408f" }}>
           Image
         </InputLabel>
-        <TextField
-          name="image"
-          value={inputs.image}
-          onChange={handleChange}
-          
-          variant="outlined"
-          required
-          sx={{
-            "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#f8408f",
-            },
-          }}
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          style={{ marginBottom: "10px" }}
         />
         <Button
-            type="submit"
-            color="primary"
-            variant="contained"
-            sx={{ backgroundColor: "#f8408f", mt: 2, height: '50px', '&:hover': { backgroundColor: "#d82776", },}}
+          type="submit"
+          color="primary"
+          variant="contained"
+          sx={{ backgroundColor: "#f8408f", mt: 2, height: '50px', '&:hover': { backgroundColor: "#d82776", },}}
         >
-            SUBMIT
+          SUBMIT
         </Button>
       </Box>
     </form>
