@@ -12,6 +12,8 @@ import { Box, IconButton } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios'
+import {toast} from 'react-toastify'
 
 const BlogCard = ({ title, description, image, username, time,id, isUser }) => {
 
@@ -22,6 +24,18 @@ const BlogCard = ({ title, description, image, username, time,id, isUser }) => {
     navigate(`/blog-details/${id}`)
   }
 
+  const handleDelete = async() => {
+    try{
+      const {data} = await axios.delete (`/api/v1/blog/delete-blog/${id}`)
+      if(data?.success){
+        toast.success('Blog deleted successfully')
+        navigate('/my-blogs')
+      }
+    }catch(error){
+      console.log(error)
+    }
+  }
+
   return (
     <Card sx={{ width: '100%', margin: 'auto', mt: 2, padding: 2, boxShadow: '5px 5px 10px #ccc', ':hover:': { boxShadow: '10px 10px 20px #ccc' } }}>
       {isUser && (
@@ -29,7 +43,7 @@ const BlogCard = ({ title, description, image, username, time,id, isUser }) => {
           <IconButton onClick = {handleEdit} sx={{ marginLeft: 'auto' }}>
             <EditIcon  sx={{ color: '#f8408f' }} />
           </IconButton>
-          <IconButton>
+          <IconButton onClick={handleDelete}>
             <DeleteForeverIcon sx={{ color: '#f8408f' }} />
           </IconButton>
         </Box>

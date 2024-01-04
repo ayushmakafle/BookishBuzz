@@ -123,25 +123,34 @@ exports.getBlogByIdController = async(req,res) => {
 }
 
 //delete blog
-exports.deleteBlogController = async(req,res) => {
-    try{
-        const blog = await blogModel.findOneAndDelete(req.params.id).populate("user")
-        await blog.user.blogs.pull(blog)
-        await blog.user.save()
+exports.deleteBlogController = async (req, res) => {
+  try {
+    const blog = await blogModel.findByIdAndDelete(req.params.id).populate("user");
 
-        return res.status(200).send({
-            success: true,
-            message: 'blog deleted'
-        })
-    }catch(error){
-        console.log(error);
-        return res.status(400).send({
-            success: false,
-            message: "Error deleting blog",
-            error,
-    })
-}
-}
+    if (!blog) {
+      return res.status(404).send({
+        success: false,
+        message: "Blog not found",
+      });
+    }
+
+    await blog.user.blogs.pull(blog);
+    await blog.user.save();
+
+    return res.status(200).send({
+      success: true,
+      message: 'Blog deleted',
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).send({
+      success: false,
+      message: "Error deleting blog",
+      error,
+    });
+  }
+};
+
 
 //get user blog
 exports.userBlogController = async(req,res) => {
