@@ -52,7 +52,7 @@ const BlogCard = ({ title, description, image, username, time, id, isUser }) => 
   };
 
   return (
-    <Card sx={{ width: '60%', margin: 'auto', mt: 2, padding: 2, boxShadow: '5px 5px 10px #ccc', ':hover:': { boxShadow: '10px 10px 20px #ccc' } }}>
+    <Card sx={{ width: '50%', margin: 'auto', mt: 2, padding: 2, boxShadow: '5px 5px 10px #ccc', ':hover:': { boxShadow: '10px 10px 20px #ccc' } }}>
       {isUser && (
         <Box display={'flex'}>
           <IconButton onClick={handleEdit} sx={{ marginLeft: 'auto' }}>
@@ -64,12 +64,12 @@ const BlogCard = ({ title, description, image, username, time, id, isUser }) => 
         </Box>
       )}
       <CardHeader title={username} subheader={formattedDate} />
-      <CardMedia component="img" height="194" src={getImageSrc()} alt={title} />
+      <CardMedia component="img" height="194" src={getImageSrc()} alt={title} sx={{ objectFit: 'contain' }} />
       <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
         <Typography variant="h6" color="text.secondary" sx={{ marginBottom: '8px' }}>
           {title}
         </Typography>
-       {/*  <Typography variant="body2" color="text.secondary" sx={{ marginBottom: '10px' }}>
+        {/* <Typography variant="body2" color="text.secondary" sx={{ marginBottom: '10px' }}>
           {description}
         </Typography> */}
         <Button variant="outlined" style={{ color: '#f8408f', borderColor: '#f8408f', marginLeft: 'auto' }} onClick={handleViewMore}>

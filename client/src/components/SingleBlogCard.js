@@ -53,7 +53,8 @@ const SingleBlogCard = ({ title, description, image, username, time, id, isUser 
       )}
       <CardHeader title={username} subheader={formattedDate} />
       {image && (
-        <CardMedia component="img" height="150" image={image} alt={title} />
+        <CardMedia component="img" height="150" image={image} alt={title} sx={{ objectFit: 'contain' }} />
+
       )}
       <CardContent>
         <Typography variant="h6" color="text.secondary">
