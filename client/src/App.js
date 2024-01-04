@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Blogs from "./pages/Blogs";
 import UserBlog from "./pages/UserBlog";
 import CreateBlog from "./pages/CreateBlog";
+import BlogDetails from "./pages/BlogDetails";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path = '/blogs' element={<Blogs />}/>
         <Route path = '/my-blogs' element={<UserBlog />}/>
         <Route path = '/create-blog' element={<CreateBlog />}/>
+        <Route path = '/blog-details/:id' element={<BlogDetails />}/>
 
         <Route path = '/login' element={<Login/>}/>
         <Route path = '/register' element={<Register/>}/>
