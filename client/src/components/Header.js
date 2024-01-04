@@ -11,7 +11,8 @@ const Header = () => {
     const navigate = useNavigate()
 
     //global state
-    const isLogin = useSelector((state) => state.isLogin)
+    let isLogin = useSelector((state) => state.isLogin)
+    isLogin = isLogin || localStorage.getItem('userId')
     const dispatch = useDispatch()
     console.log(isLogin)
     //states
