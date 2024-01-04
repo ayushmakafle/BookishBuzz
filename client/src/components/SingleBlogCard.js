@@ -8,7 +8,7 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 import moment from 'moment';
-import { Box, IconButton } from '@mui/material';
+import { Box, Button, IconButton } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from 'react-router-dom';
@@ -18,8 +18,6 @@ import { toast } from 'react-toastify';
 const SingleBlogCard = ({ title, description, image, username, time, id, isUser }) => {
   const navigate = useNavigate();
   const formattedDate = moment(time).format('YYYY-MM-DD HH:mm:ss');
-
-  console.log('Image Data:', image);
 
   const handleEdit = () => {
     navigate(`/edit-blog-details/${id}`);
@@ -35,6 +33,10 @@ const SingleBlogCard = ({ title, description, image, username, time, id, isUser 
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleViewMore = () => {
+    navigate(`/blog-detail/${id}`);
   };
 
   return (
@@ -53,13 +55,16 @@ const SingleBlogCard = ({ title, description, image, username, time, id, isUser 
       {image && (
         <CardMedia component="img" height="194" image={image} alt={title} />
       )}
-      <CardContent>
-        <Typography variant="h6" color="text.secondary">
+      <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Typography variant="h6" color="text.secondary" sx={{ marginBottom: '8px' }}>
           {title}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body2" color="text.secondary" sx={{ marginBottom: '10px' }}>
           {description}
         </Typography>
+        <Button variant="outlined" style={{ color: '#f8408f', borderColor: '#f8408f', marginLeft: 'auto' }} onClick={handleViewMore}>
+          View More
+        </Button>
       </CardContent>
     </Card>
   );
