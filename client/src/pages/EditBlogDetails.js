@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Box, Button, InputLabel, TextField, Typography } from '@mui/material';
 import { toast } from 'react-toastify';
 
-const BlogDetails = () => {
+const EditBlogDetails = () => {
   const navigate = useNavigate();
   const [blog, setBlog] = useState({});
   const id = useParams().id;
@@ -191,4 +191,4 @@ const getBlogDetail = async () => {
   );
 };
 
-export default BlogDetails;
+export default EditBlogDetails;

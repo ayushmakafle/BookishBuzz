@@ -8,8 +8,9 @@ import Login from './pages/Login';
 import Blogs from './pages/Blogs';
 import UserBlog from './pages/UserBlog';
 import CreateBlog from './pages/CreateBlog';
-import BlogDetails from './pages/BlogDetails';
 import LandingPage from './pages/LandingPage';
+import EditBlogDetails from './pages/EditBlogDetails';
+import BlogDetail from './pages/BlogDetail';
 
 function App() {
   return (
@@ -23,7 +24,9 @@ function App() {
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/my-blogs" element={<UserBlog />} />
           <Route path="/create-blog" element={<CreateBlog />} />
-          <Route path="/blog-details/:id" element={<BlogDetails />} />
+          <Route path="/blog-detail/:id" element={<BlogDetail />} />
+
+          <Route path="/edit-blog-details/:id" element={<EditBlogDetails />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>

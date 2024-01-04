@@ -22,7 +22,7 @@ const SingleBlogCard = ({ title, description, image, username, time, id, isUser 
   console.log('Image Data:', image);
 
   const handleEdit = () => {
-    navigate(`/blog-details/${id}`);
+    navigate(`/edit-blog-details/${id}`);
   };
 
   const handleDelete = async () => {

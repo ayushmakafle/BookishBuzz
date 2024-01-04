@@ -8,7 +8,7 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 import moment from 'moment';
-import { Box, IconButton } from '@mui/material';
+import { Box, IconButton, Button } from '@mui/material'; // Include Button
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from 'react-router-dom';
@@ -20,7 +20,7 @@ const BlogCard = ({ title, description, image, username, time, id, isUser }) => 
   const formattedDate = moment(time).format('YYYY-MM-DD HH:mm:ss');
 
   const handleEdit = () => {
-    navigate(`/blog-details/${id}`);
+    navigate(`/edit-blog-details/${id}`);
   };
 
   const handleDelete = async () => {
@@ -45,6 +45,10 @@ const BlogCard = ({ title, description, image, username, time, id, isUser }) => 
     return ''; // Default image source if no valid image data
   };
 
+  const handleViewMore = () => {
+    navigate(`/blog-detail/${id}`);
+  };
+
   return (
     <Card sx={{ width: '100%', margin: 'auto', mt: 2, padding: 2, boxShadow: '5px 5px 10px #ccc', ':hover:': { boxShadow: '10px 10px 20px #ccc' } }}>
       {isUser && (
@@ -66,6 +70,9 @@ const BlogCard = ({ title, description, image, username, time, id, isUser }) => 
         <Typography variant="body2" color="text.secondary">
           {description}
         </Typography>
+        <Button variant="outlined" color="primary" onClick={handleViewMore} sx={{ marginTop: '10px' }}>
+          View More
+        </Button>
       </CardContent>
     </Card>
   );
