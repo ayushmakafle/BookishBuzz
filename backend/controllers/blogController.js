@@ -191,8 +191,16 @@ exports.getBlogByIdController = async (req, res) => {
         // Convert Buffer data to data URI for the blog's image
         let blogWithImageData = blog.toJSON();
         if (blogWithImageData.image && blogWithImageData.image.data) {
-            const dataUri = `data:${blogWithImageData.image.contentType};base64,${blogWithImageData.image.data.toString('base64')}`;
-            blogWithImageData.image = { dataUri };
+            if (typeof blogWithImageData.image.data === 'object') {
+                // Assume the image is already in the correct format
+                blogWithImageData.image = blogWithImageData.image.data;
+            } else {
+                // Convert Buffer data to data URI
+                const dataUri = `data:${blogWithImageData.image.contentType};base64,${blogWithImageData.image.data.toString('base64')}`;
+                blogWithImageData.image = { dataUri };
+            }
+        } else {
+            blogWithImageData.image = {}; // Set empty object if no image data
         }
 
         return res.status(200).send({
@@ -209,6 +217,7 @@ exports.getBlogByIdController = async (req, res) => {
         });
     }
 };
+
 
 
 //delete blog

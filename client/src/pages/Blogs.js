@@ -35,7 +35,7 @@ const Blogs = () => {
               username={blog.user ? blog.user.username : 'Unknown User'}
               time={blog.createdAt}
               style={{
-                width: '100%',
+                width: '60%',
                 height: '400px', // Set your preferred fixed height for the cards
                 objectFit: 'contain', // Ensure the image is fully visible
                 marginBottom: '20px',
