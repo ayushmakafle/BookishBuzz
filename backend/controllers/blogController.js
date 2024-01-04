@@ -1,6 +1,14 @@
 const mongoose = require('mongoose')
 const blogModel = require ('../models/blogModel')
 const UserModel = require('../models/userModels')
+const multer = require('multer');
+
+const storage = multer.memoryStorage(); 
+const upload = multer({ storage: storage });
+
+// Middleware to handle file upload
+const uploadImage = upload.single('image');
+
 
 //get all blogs
 exports.getAllBlogsController = async ( req, res) => {
@@ -28,48 +36,76 @@ exports.getAllBlogsController = async ( req, res) => {
     }
 }
 
-//create blog
-exports.createBlogController = async (req,res) => {
-    try{
-        const {title,description,image, user} = req.body
-        //validation
-        if(!title || !description || !image || !user){
-            return res.status(400).send({
-                success:false,
-                message:'Please provide all fields'
-            })
-        }
-        const existingUser = await UserModel.findById(user)
-        if(!existingUser){
-            return res.status(404).send({
-                success:false,
-                message:'unable to find user'
-            })
-        }
-        const newBlog = new blogModel ({title,description,image,user})
-        
-        const session = await mongoose.startSession()
-        session.startTransaction()
-        await newBlog.save({session})
-        existingUser.blogs.push(newBlog)
-        await existingUser.save({session})
-        await session.commitTransaction()
+// create blog
+exports.createBlogController = async (req, res) => {
+    try {
+        // Use the upload middleware to handle file upload
+        uploadImage(req, res, async (err) => {
+            if (err instanceof multer.MulterError) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Error uploading file',
+                });
+            } else if (err) {
+                return res.status(500).json({
+                    success: false,
+                    message: 'Error uploading file',
+                });
+            }
 
-        await newBlog.save()
-        return res.status(201).send({
-            success:true,
-            message:'blog created',
-            newBlog
-        })
-    }catch(error){
-        console.log(error)
-        return res.status(500).send({
-            success:false,
-            message:'error getting blogs',
-            error
-        })
+            const { title, description, user } = req.body;
+            const image = {
+                data: req.file.buffer,
+                contentType: req.file.mimetype,
+            };
+
+            // Validation
+            if (!title || !description || !user) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Please provide all fields',
+                });
+            }
+
+            const existingUser = await UserModel.findById(user);
+            if (!existingUser) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Unable to find user',
+                });
+            }
+
+            const newBlog = new blogModel({ title, description, image, user });
+
+            const session = await mongoose.startSession();
+            session.startTransaction();
+            try {
+                await newBlog.save({ session });
+                existingUser.blogs.push(newBlog);
+                await existingUser.save({ session });
+                await session.commitTransaction();
+            } catch (error) {
+                await session.abortTransaction();
+                throw error;
+            } finally {
+                session.endSession();
+            }
+
+            return res.status(201).json({
+                success: true,
+                message: 'Blog created',
+                newBlog,
+            });
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: 'Error creating blog',
+            error,
+        });
     }
-}
+};
 
 //update blogs
 exports.updateBlogController = async (req, res) => {
