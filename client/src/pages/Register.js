@@ -1,43 +1,95 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { Box, Typography, TextField, Button } from '@mui/material';
+import {
+  Box,
+  Typography,
+  TextField,
+  Button,
+  IconButton,
+  InputAdornment,
+} from '@mui/material';
 import axios from 'axios';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const Register = () => {
   const navigate = useNavigate();
 
-  // state
   const [inputs, setInputs] = useState({
     name: '',
     email: '',
     password: '',
+    showPassword: false,
   });
 
-  // handle input change
+  const [errors, setErrors] = useState({});
+
   const handleChange = (e) => {
     setInputs((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
+
+    // Clear validation errors on input change
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [e.target.name]: '',
+    }));
   };
 
-  // form handle
+  const handleClickShowPassword = () => {
+    setInputs((prevState) => ({
+      ...prevState,
+      showPassword: !prevState.showPassword,
+    }));
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
+  const validateForm = () => {
+    let valid = true;
+    const newErrors = {};
+
+    // Validate email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!inputs.email || !emailRegex.test(inputs.email)) {
+      newErrors.email = 'Enter a valid email address';
+      valid = false;
+    }
+
+
+     const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[?.,!]).{8,}$/;
+     if (!inputs.password || !passwordRegex.test(inputs.password)) {
+      newErrors.password =
+        'Password must have at least one uppercase letter, one number, one special character (?, ., or !), and be at least 8 characters long';
+        valid = false;
+      }
+
+    setErrors(newErrors);
+    return valid;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const { data } = await axios.post('/api/v1/user/register', {
-        username: inputs.name,
-        email: inputs.email,
-        password: inputs.password,
-      });
 
-      if (data.success) {
-        toast.success('User registration successful');
-        navigate('/login');
+    if (validateForm()) {
+      try {
+        const { data } = await axios.post('/api/v1/user/register', {
+          username: inputs.name,
+          email: inputs.email,
+          password: inputs.password,
+        });
+
+        if (data.success) {
+          toast.success('User registration successful');
+          navigate('/login');
+        }
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
     }
   };
 
@@ -50,6 +102,7 @@ const Register = () => {
           flexDirection={'column'}
           alignItems={'center'}
           margin='auto'
+          marginTop={'10px'}
           boxShadow={'10px 10px 20px #ccc'}
           padding={3}
           borderRadius={5}
@@ -74,6 +127,7 @@ const Register = () => {
               },
             }}
           />
+
           <TextField
             placeholder='Enter your email'
             value={inputs.email}
@@ -83,21 +137,39 @@ const Register = () => {
             type='text'
             variant='outlined'
             fullWidth
+            error={!!errors.email}
+            helperText={errors.email}
             sx={{
               '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
                 borderColor: '#f8408f',
               },
             }}
           />
+
           <TextField
             placeholder='Enter your password'
             value={inputs.password}
             onChange={handleChange}
             name='password'
             margin='normal'
-            type='password'
+            type={inputs.showPassword ? 'text' : 'password'}
             variant='outlined'
             fullWidth
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position='end'>
+                  <IconButton
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge='end'
+                  >
+                    {inputs.showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+            error={!!errors.password}
+            helperText={errors.password}
             sx={{
               '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
                 borderColor: '#f8408f',

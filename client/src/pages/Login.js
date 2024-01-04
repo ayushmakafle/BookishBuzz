@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { Box, Typography, TextField, Button } from '@mui/material';
+import { Box, Typography, TextField, Button, InputAdornment, IconButton } from '@mui/material';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { authActions } from '../redux/store';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -14,6 +16,7 @@ const Login = () => {
     const [inputs, setInputs] = useState({
         email: '',
         password: '',
+        showPassword: false,
     });
 
     // handle input change
@@ -24,31 +27,42 @@ const Login = () => {
         }));
     };
 
+    const handleClickShowPassword = () => {
+      setInputs((prevState) => ({
+        ...prevState,
+        showPassword: !prevState.showPassword,
+      }));
+    };
+
+    const handleMouseDownPassword = (event) => {
+      event.preventDefault();
+    };
+
     // form handle
     const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    const { data, status } = await axios.post('/api/v1/user/login', {
-      username: inputs.name,
-      email: inputs.email,
-      password: inputs.password,
-    });
+      e.preventDefault();
+      try {
+        const { data, status } = await axios.post('/api/v1/user/login', {
+          username: inputs.name,
+          email: inputs.email,
+          password: inputs.password,
+        });
 
-    if (status === 200 && data.success) {
-      localStorage.setItem('userId', data?.user._id);
-      dispatch(authActions.login());
-      toast.success('User login successful');
-      navigate('/');
-    }
-  } catch (error) {
-    console.error(error);
-    if (error.response && error.response.status === 404) {
-      toast.error('Email is not registered');
-    } else {
-      toast.error('Login failed');
-    }
-  }
-};
+        if (status === 200 && data.success) {
+          localStorage.setItem('userId', data?.user._id);
+          dispatch(authActions.login());
+          toast.success('User login successful');
+          navigate('/');
+        }
+      } catch (error) {
+        console.error(error);
+        if (error.response && error.response.status === 404) {
+          toast.error('Email is not registered');
+        } else {
+          toast.error('Login failed');
+        }
+      }
+    };
 
 
   return (
@@ -90,9 +104,22 @@ const Login = () => {
             onChange={handleChange}
             name='password'
             margin='normal'
-            type='password'
+            type={inputs.showPassword ? 'text' : 'password'}
             variant='outlined'
             fullWidth
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position='end'>
+                  <IconButton
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge='end'
+                  >
+                    {inputs.showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
             sx={{
               '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
                 borderColor: '#f8408f',
