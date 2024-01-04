@@ -1,4 +1,4 @@
-// BlogCard.js
+// SingleBlogCard.js
 import React from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -15,9 +15,11 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-const BlogCard = ({ title, description, image, username, time, id, isUser }) => {
+const SingleBlogCard = ({ title, description, image, username, time, id, isUser }) => {
   const navigate = useNavigate();
   const formattedDate = moment(time).format('YYYY-MM-DD HH:mm:ss');
+
+  console.log('Image Data:', image);
 
   const handleEdit = () => {
     navigate(`/blog-details/${id}`);
@@ -35,16 +37,6 @@ const BlogCard = ({ title, description, image, username, time, id, isUser }) => 
     }
   };
 
-  const getImageSrc = () => {
-    if (image?.dataUri) {
-      return image.dataUri;
-    } else if (image?.data && image.contentType) {
-      const dataUri = `data:${image.contentType};base64,${image.data.toString('base64')}`;
-      return dataUri;
-    }
-    return ''; // Default image source if no valid image data
-  };
-
   return (
     <Card sx={{ width: '100%', margin: 'auto', mt: 2, padding: 2, boxShadow: '5px 5px 10px #ccc', ':hover:': { boxShadow: '10px 10px 20px #ccc' } }}>
       {isUser && (
@@ -58,7 +50,9 @@ const BlogCard = ({ title, description, image, username, time, id, isUser }) => 
         </Box>
       )}
       <CardHeader avatar={<Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">{username}</Avatar>} title={username} subheader={formattedDate} />
-      <CardMedia component="img" height="194" src={getImageSrc()} alt={title} />
+      {image && (
+        <CardMedia component="img" height="194" image={image} alt={title} />
+      )}
       <CardContent>
         <Typography variant="h6" color="text.secondary">
           {title}
@@ -71,4 +65,4 @@ const BlogCard = ({ title, description, image, username, time, id, isUser }) => 
   );
 };
 
-export default BlogCard;
+export default SingleBlogCard;

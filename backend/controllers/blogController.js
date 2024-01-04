@@ -241,27 +241,46 @@ exports.deleteBlogController = async (req, res) => {
 };
 
 
-//get user blog
-exports.userBlogController = async(req,res) => {
-    try{
-        const userBlog = await UserModel.findById(req.params.id).populate('blogs')
-        if(!userBlog){
+// get user blog
+exports.userBlogController = async (req, res) => {
+    try {
+        const userBlog = await UserModel.findById(req.params.id).populate({
+            path: 'blogs',
+            populate: {
+                path: 'user',
+                model: 'User'
+            }
+        });
+
+        if (!userBlog) {
             return res.status(404).send({
-                success:true,
-                message:'blogs not found with this id'
-            })
+                success: true,
+                message: 'Blogs not found with this id'
+            });
         }
+
+        // Convert Buffer data to data URI for each blog's image
+        const blogsWithImageData = await Promise.all(
+            userBlog.blogs.map(async (blog) => {
+                if (blog.image && blog.image.data) {
+                    const dataUri = `data:${blog.image.contentType};base64,${blog.image.data.toString('base64')}`;
+                    return { ...blog.toJSON(), image: { dataUri } };
+                }
+                return blog.toJSON();
+            })
+        );
+
         return res.status(200).send({
-            success:true,
-            message:'User blogs fetched',
-            userBlog
-        })
-    }catch(error){
+            success: true,
+            message: "User blogs fetched",
+            userBlog: { ...userBlog.toJSON(), blogs: blogsWithImageData }
+        });
+    } catch (error) {
         console.log(error);
         return res.status(400).send({
             success: false,
             message: "Error fetching the user's blogs",
             error,
-    })
-}
-}
+        });
+    }
+};

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import BlogCard from '../components/BlogCard';
+import SingleBlogCard from '../components/SingleBlogCard';
 
 const UserBlog = () => {
   const [blogs, setBlogs] = useState([]);
@@ -29,12 +29,14 @@ const UserBlog = () => {
       <div style={{ textAlign: 'center', marginRight: blogs.length > 0 ? '20px' : '0' }}>
         {blogs && blogs.length > 0 ? (
           blogs.map((blog) => (
-            <BlogCard
-              id={blog?._id}
-              isUser = {true}
+            <SingleBlogCard
+              key={blog._id}
+              id={blog._id}
+              isUser={true}
               title={blog.title}
               description={blog.description}
-              image={blog.image}
+              image={blog.image && blog.image.dataUri}
+
               username={blog.user.username}
               time={blog.createdAt}
             />
