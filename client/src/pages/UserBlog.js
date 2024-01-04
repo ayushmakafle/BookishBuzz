@@ -1,9 +1,7 @@
-// UserBlog.js
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import BlogCard from '../components/BlogCard';
-
-// ...
 
 const UserBlog = () => {
   const [blogs, setBlogs] = useState([]);
@@ -14,7 +12,6 @@ const UserBlog = () => {
       const { data } = await axios.get(`/api/v1/blog/user-blog/${id}`);
 
       if (data?.success) {
-        // Update the line below to correctly access the blogs from the user object
         setBlogs(data?.userBlog?.blogs || []); 
       }
     } catch (error) {
@@ -31,24 +28,40 @@ const UserBlog = () => {
   }, [blogs]);
 
   return (
-    <div>
-      {blogs && blogs.length > 0 ? (
-        blogs.map((blog) => (
-          <BlogCard
-            key={blog._id}
-            title={blog.title}
-            description={blog.description}
-            image={blog.image}
-            username={blog.user.username}
-            time={blog.createdAt}
-          />
-        ))
-      ) : (
-        <h1>You don't have any blogs</h1>
-      )}
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <div style={{ textAlign: 'left', marginRight: '20px' }}>
+        <img
+          src="/images/isometric-young-girl-using-techn.png"
+          alt="Empty blogs"
+          style={{ width: '300px', marginBottom: '20px' }}
+        />
+      </div>
+      <div style={{ textAlign: 'center' }}>
+        {blogs && blogs.length > 0 ? (
+          blogs.map((blog) => (
+            <BlogCard
+              key={blog._id}
+              title={blog.title}
+              description={blog.description}
+              image={blog.image}
+              username={blog.user.username}
+              time={blog.createdAt}
+            />
+          ))
+        ) : (
+          <div>
+            <h2>You don't have any blogs</h2>
+            <p style={{ marginBottom: '20px',marginTop:'10px' }}>We would love to read your thoughts on books!</p>
+            <Link to="/create-blogs">
+              <button style={{ padding: '10px 20px', fontSize: '16px', backgroundColor: '#f8408f', color: 'white', borderRadius: '5px', cursor: 'pointer' }}>
+                Create a Blog Now
+              </button>
+            </Link>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
 
 export default UserBlog;
-
