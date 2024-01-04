@@ -9,23 +9,33 @@ const BlogDetails = () => {
   const [blog, setBlog] = useState({});
   const id = useParams().id;
   const [inputs, setInputs] = useState({});
+  const [currentImage, setCurrentImage] = useState(null);
 
-  // Get blog details
-  const getBlogDetail = async () => {
-    try {
-      const { data } = await axios.get(`/api/v1/blog/get-blog/${id}`);
-      if (data?.success) {
-        setBlog(data?.blog);
-        setInputs({
-          title: data.blog.title,
-          description: data.blog.description,
-          image: data?.blog.image,
-        });
-      }
-    } catch (error) {
-      console.log(error);
+// Get blog details
+const getBlogDetail = async () => {
+  try {
+    const { data } = await axios.get(`/api/v1/blog/get-blog/${id}`);
+    if (data?.success) {
+      setBlog(data?.blog);
+      setInputs({
+        title: data.blog.title,
+        description: data.blog.description,
+        image: data?.blog.image?.dataUri || null,
+      });
+
+      // Ensure that dataUri is a string
+      const imageUri = typeof data?.blog.image?.dataUri === 'object'
+        ? data.blog.image.dataUri.toString()
+        : data?.blog.image?.dataUri || null;
+      setCurrentImage(imageUri);
     }
-  };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+
 
   useEffect(() => {
     getBlogDetail();
@@ -46,6 +56,7 @@ const BlogDetails = () => {
       ...prevState,
       image: file,
     }));
+    setCurrentImage(URL.createObjectURL(file)); // Display the selected image
   };
 
   // Form submission
@@ -152,6 +163,9 @@ const BlogDetails = () => {
           >
             Image
           </InputLabel>
+          {currentImage && (
+            <img src={currentImage}  style={{ marginBottom: '10px', maxWidth: '100%' }} />
+          )}
           <input
             type='file'
             accept='image/*'

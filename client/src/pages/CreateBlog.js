@@ -12,6 +12,7 @@ const CreateBlog = () => {
     description: "",
     image: null, // Initialize as null
   });
+  const [currentImage, setCurrentImage] = useState(null);
 
   // Input change
   const handleChange = (e) => {
@@ -28,6 +29,7 @@ const CreateBlog = () => {
       ...prevState,
       image: file,
     }));
+    setCurrentImage(URL.createObjectURL(file)); // Display the selected image
   };
 
   // Form submission
@@ -110,6 +112,9 @@ const CreateBlog = () => {
         <InputLabel sx={{ mb: 1, mt: 2, fontSize: "20px", fontWeight: "bold", color: "#f8408f" }}>
           Image
         </InputLabel>
+        {currentImage && (
+          <img src={currentImage} alt='Current' style={{ marginBottom: '10px', maxWidth: '100%' }} />
+        )}
         <input
           type="file"
           accept="image/*"
@@ -120,7 +125,12 @@ const CreateBlog = () => {
           type="submit"
           color="primary"
           variant="contained"
-          sx={{ backgroundColor: "#f8408f", mt: 2, height: '50px', '&:hover': { backgroundColor: "#d82776", },}}
+          sx={{
+            backgroundColor: "#f8408f",
+            mt: 2,
+            height: '50px',
+            '&:hover': { backgroundColor: "#d82776", },
+          }}
         >
           SUBMIT
         </Button>
