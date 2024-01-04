@@ -23,7 +23,7 @@ const Blogs = () => {
     },[])
 
   return (
-    <div>
+    <div style={{ margin: '30px' }}>
         {blogs && blogs.map(blog => (
             <BlogCard 
                 title={blog.title}

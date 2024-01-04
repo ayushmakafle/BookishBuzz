@@ -18,7 +18,7 @@ function App() {
         <Route path = '/' element={<Blogs />}/>
         <Route path = '/blogs' element={<Blogs />}/>
         <Route path = '/my-blogs' element={<UserBlog />}/>
-        <Route path = '/create-blogs' element={<CreateBlog />}/>
+        <Route path = '/create-blog' element={<CreateBlog />}/>
 
         <Route path = '/login' element={<Login/>}/>
         <Route path = '/register' element={<Register/>}/>

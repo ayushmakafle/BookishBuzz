@@ -1,3 +1,4 @@
+// UserBlog.js
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -12,7 +13,7 @@ const UserBlog = () => {
       const { data } = await axios.get(`/api/v1/blog/user-blog/${id}`);
 
       if (data?.success) {
-        setBlogs(data?.userBlog?.blogs || []); 
+        setBlogs(data?.userBlog?.blogs || []);
       }
     } catch (error) {
       console.log(error);
@@ -23,20 +24,9 @@ const UserBlog = () => {
     getUserBlogs();
   }, []);
 
-  useEffect(() => {
-    console.log(blogs);
-  }, [blogs]);
-
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      <div style={{ textAlign: 'left', marginRight: '20px' }}>
-        <img
-          src="/images/isometric-young-girl-using-techn.png"
-          alt="Empty blogs"
-          style={{ width: '300px', marginBottom: '20px' }}
-        />
-      </div>
-      <div style={{ textAlign: 'center' }}>
+      <div style={{ textAlign: 'center', marginRight: blogs.length > 0 ? '20px' : '0' }}>
         {blogs && blogs.length > 0 ? (
           blogs.map((blog) => (
             <BlogCard
@@ -51,8 +41,8 @@ const UserBlog = () => {
         ) : (
           <div>
             <h2>You don't have any blogs</h2>
-            <p style={{ marginBottom: '20px',marginTop:'10px' }}>We would love to read your thoughts on books!</p>
-            <Link to="/create-blogs">
+            <p style={{ marginBottom: '20px', marginTop: '10px' }}>We would love to read your thoughts on books!</p>
+            <Link to="/create-blog">
               <button style={{ padding: '10px 20px', fontSize: '16px', backgroundColor: '#f8408f', color: 'white', borderRadius: '5px', cursor: 'pointer' }}>
                 Create a Blog Now
               </button>
@@ -60,6 +50,15 @@ const UserBlog = () => {
           </div>
         )}
       </div>
+      {!blogs || blogs.length === 0 && (
+        <div style={{ textAlign: 'left', marginLeft: blogs.length > 0 ? '20px' : '0' }}>
+          <img
+            src="/images/isometric-young-girl-using-techn.png"
+            alt="Empty blogs"
+            style={{ width: '300px', marginBottom: '20px' }}
+          />
+        </div>
+      )}
     </div>
   );
 };
