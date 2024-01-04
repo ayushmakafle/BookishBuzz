@@ -36,7 +36,7 @@ const BlogDetail = () => {
 
   return (
     <Box
-      width={'50%'}
+      width={'80%'}
       border={3}
       borderRadius={10}
       padding={3}
@@ -45,6 +45,7 @@ const BlogDetail = () => {
       display='flex'
       flexDirection={'column'}
       marginTop='30px'
+      marginBottom={'10px'}
     >
       {/* Back button */}
       <IconButton

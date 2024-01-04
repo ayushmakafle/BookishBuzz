@@ -63,15 +63,15 @@ const BlogCard = ({ title, description, image, username, time, id, isUser }) => 
           </IconButton>
         </Box>
       )}
-      <CardHeader avatar={<Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">{username}</Avatar>} title={username} subheader={formattedDate} />
+      <CardHeader title={username} subheader={formattedDate} />
       <CardMedia component="img" height="194" src={getImageSrc()} alt={title} />
       <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
         <Typography variant="h6" color="text.secondary" sx={{ marginBottom: '8px' }}>
           {title}
         </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ marginBottom: '10px' }}>
+       {/*  <Typography variant="body2" color="text.secondary" sx={{ marginBottom: '10px' }}>
           {description}
-        </Typography>
+        </Typography> */}
         <Button variant="outlined" style={{ color: '#f8408f', borderColor: '#f8408f', marginLeft: 'auto' }} onClick={handleViewMore}>
           View More
         </Button>

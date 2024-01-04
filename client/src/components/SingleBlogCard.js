@@ -8,7 +8,7 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 import moment from 'moment';
-import { Box, IconButton } from '@mui/material';
+import { Box, IconButton, Button } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from 'react-router-dom';
@@ -18,8 +18,6 @@ import { toast } from 'react-toastify';
 const SingleBlogCard = ({ title, description, image, username, time, id, isUser }) => {
   const navigate = useNavigate();
   const formattedDate = moment(time).format('YYYY-MM-DD HH:mm:ss');
-
-  console.log('Image Data:', image);
 
   const handleEdit = () => {
     navigate(`/edit-blog-details/${id}`);
@@ -37,8 +35,12 @@ const SingleBlogCard = ({ title, description, image, username, time, id, isUser 
     }
   };
 
+  const handleViewMore = () => {
+    navigate(`/blog-detail/${id}`);
+  };
+
   return (
-    <Card sx={{ width: '60%', margin: '10px', padding: '10px', boxShadow: '5px 5px 10px #ccc', ':hover:': { boxShadow: '10px 10px 20px #ccc' } }}>
+    <Card sx={{ width: '60%', margin: 'auto', mt: 2, padding: 2, boxShadow: '5px 5px 10px #ccc', ':hover:': { boxShadow: '10px 10px 20px #ccc' } }}>
       {isUser && (
         <Box display={'flex'}>
           <IconButton onClick={handleEdit} sx={{ marginLeft: 'auto' }}>
@@ -49,7 +51,7 @@ const SingleBlogCard = ({ title, description, image, username, time, id, isUser 
           </IconButton>
         </Box>
       )}
-      <CardHeader avatar={<Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">{username}</Avatar>} title={username} subheader={formattedDate} />
+      <CardHeader title={username} subheader={formattedDate} />
       {image && (
         <CardMedia component="img" height="150" image={image} alt={title} />
       )}
@@ -57,9 +59,12 @@ const SingleBlogCard = ({ title, description, image, username, time, id, isUser 
         <Typography variant="h6" color="text.secondary">
           {title}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+       {/*  <Typography variant="body2" color="text.secondary">
           {description}
-        </Typography>
+        </Typography> */}
+        <Button variant="outlined" style={{ color: '#f8408f', borderColor: '#f8408f', marginLeft: 'auto', marginTop: '10px' }} onClick={handleViewMore}>
+          View More
+        </Button>
       </CardContent>
     </Card>
   );
