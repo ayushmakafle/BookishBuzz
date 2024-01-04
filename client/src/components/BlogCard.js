@@ -15,6 +15,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
+// ... (your other imports)
+
 const BlogCard = ({ title, description, image, username, time, id, isUser }) => {
   const navigate = useNavigate();
   const formattedDate = moment(time).format('YYYY-MM-DD HH:mm:ss');
@@ -63,14 +65,14 @@ const BlogCard = ({ title, description, image, username, time, id, isUser }) => 
       )}
       <CardHeader avatar={<Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">{username}</Avatar>} title={username} subheader={formattedDate} />
       <CardMedia component="img" height="194" src={getImageSrc()} alt={title} />
-      <CardContent>
-        <Typography variant="h6" color="text.secondary">
+      <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Typography variant="h6" color="text.secondary" sx={{ marginBottom: '8px' }}>
           {title}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body2" color="text.secondary" sx={{ marginBottom: '10px' }}>
           {description}
         </Typography>
-        <Button variant="outlined" color="primary" onClick={handleViewMore} sx={{ marginTop: '10px' }}>
+        <Button variant="outlined" style={{ color: '#f8408f', borderColor: '#f8408f', marginLeft: 'auto' }} onClick={handleViewMore}>
           View More
         </Button>
       </CardContent>
