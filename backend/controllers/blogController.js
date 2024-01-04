@@ -9,32 +9,50 @@ const upload = multer({ storage: storage });
 // Middleware to handle file upload
 const uploadImage = upload.single('image');
 
+//read images
+const path = require('path');
+const fs = require('fs');
+const util = require('util');
+const readFileAsync = util.promisify(fs.readFile);
 
-//get all blogs
-exports.getAllBlogsController = async ( req, res) => {
-    try{
-        const blogs = await blogModel.find({}).populate('user')
-        if(!blogs){
+// get all blogs
+exports.getAllBlogsController = async (req, res) => {
+    try {
+        const blogs = await blogModel.find({}).populate('user');
+
+        if (!blogs || blogs.length === 0) {
             return res.status(200).send({
                 success: false,
                 message: 'No blogs found'
-            })
+            });
         }
+
+        // Convert Buffer data to data URI for each blog's image
+        const blogsWithImageData = await Promise.all(
+            blogs.map(async (blog) => {
+                if (blog.image && blog.image.data) {
+                    const dataUri = `data:${blog.image.contentType};base64,${blog.image.data.toString('base64')}`;
+                    return { ...blog.toJSON(), image: { dataUri } };
+                }
+                return blog.toJSON();
+            })
+        );
+
         return res.status(200).send({
             success: true,
-            BlogCount : blogs.length,
-            message: "All blogs list",
-            blogs
-        })
-    }catch(error){
-        console.log(error)
+            BlogCount: blogs.length,
+            message: 'All blogs list',
+            blogs: blogsWithImageData
+        });
+    } catch (error) {
+        console.log(error);
         return res.status(500).send({
-            success:false,
-            message:'error getting blogs',
+            success: false,
+            message: 'Error getting blogs',
             error
-        })
+        });
     }
-}
+};
 
 // create blog
 exports.createBlogController = async (req, res) => {
@@ -107,56 +125,91 @@ exports.createBlogController = async (req, res) => {
     }
 };
 
-//update blogs
+// update blogs
 exports.updateBlogController = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { title, description, image } = req.body;
-    const blog = await blogModel.findByIdAndUpdate(
-      id,
-      { ...req.body },
-      { new: true }
-    );
-    return res.status(200).send({
-      success: true,
-      message: "Blog Updated!",
-      blog,
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(400).send({
-      success: false,
-      message: "Error While updating Blog",
-      error,
-    });
-  }
-};
+    try {
+        const { id } = req.params;
+        const { title, description } = req.body;
 
-//single blog
-exports.getBlogByIdController = async(req,res) => {
-    try{
-        const {id} = req.params
-        const blog = await blogModel.findById(id)
-        if(!blog){
+        // Use the upload middleware to handle file upload
+        uploadImage(req, res, async (err) => {
+            if (err instanceof multer.MulterError) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Error uploading file',
+                });
+            } else if (err) {
+                return res.status(500).json({
+                    success: false,
+                    message: 'Error uploading file',
+                });
+            }
+
+            let imageToUpdate = {};
+            if (req.file) {
+                imageToUpdate = {
+                    data: req.file.buffer,
+                    contentType: req.file.mimetype,
+                };
+            }
+
+            const updatedBlog = await blogModel.findByIdAndUpdate(
+                id,
+                { title, description, image: imageToUpdate },
+                { new: true }
+            );
+
             return res.status(200).send({
-                success: false,
-                message: 'The blog with the provided ID is not present or does not exist'
-            })
-        }
-            return res.status(200).send({
-                success:true,
-                message:'Single blog fetched',
-                blog
-            })
-    }catch(error){
+                success: true,
+                message: 'Blog Updated!',
+                blog: updatedBlog,
+            });
+        });
+    } catch (error) {
         console.log(error);
         return res.status(400).send({
             success: false,
-            message: "Error getting blog by id",
+            message: 'Error While updating Blog',
             error,
-    })
-}
-}
+        });
+    }
+};
+
+// single blog
+exports.getBlogByIdController = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const blog = await blogModel.findById(id).populate('user');
+
+        if (!blog) {
+            return res.status(200).send({
+                success: false,
+                message: 'The blog with the provided ID is not present or does not exist'
+            });
+        }
+
+        // Convert Buffer data to data URI for the blog's image
+        let blogWithImageData = blog.toJSON();
+        if (blogWithImageData.image && blogWithImageData.image.data) {
+            const dataUri = `data:${blogWithImageData.image.contentType};base64,${blogWithImageData.image.data.toString('base64')}`;
+            blogWithImageData.image = { dataUri };
+        }
+
+        return res.status(200).send({
+            success: true,
+            message: 'Single blog fetched',
+            blog: blogWithImageData
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(400).send({
+            success: false,
+            message: 'Error getting blog by id',
+            error
+        });
+    }
+};
+
 
 //delete blog
 exports.deleteBlogController = async (req, res) => {
