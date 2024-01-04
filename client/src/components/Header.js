@@ -24,6 +24,7 @@ const Header = () => {
             dispatch(authActions.logout())
             toast.success('Logout successful')
             navigate('/login')
+            localStorage.clear()
         }catch(error){
             console.log(error)
         }
@@ -34,7 +35,9 @@ const Header = () => {
       <AppBar position='sticky' sx={{ background: '#f8408f'  }}>
         <Toolbar>
           <Typography variant='h4' sx={{ flexGrow: 1, color: 'white' }}>
-            Bookish Buzz
+             <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+              Bookish Buzz
+            </Link>
           </Typography>
           {isLogin && (
             <Box display={'flex'} marginLeft='auto' marginRight={'auto'}>
