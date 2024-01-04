@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Box, Typography, IconButton } from '@mui/material';
+import { Box, Typography, IconButton, Grid, Divider } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useParams, useNavigate } from 'react-router-dom';
 
@@ -56,33 +56,45 @@ const BlogDetail = () => {
       </IconButton>
 
       {/* Blog Details */}
-      <Box textAlign={'center'}>
-        <Typography variant='h4' fontWeight='bold' color='#f8408f'>
-          {blog.title}
-        </Typography>
-        
+      <Grid container spacing={3}>
+        {/* Left side - Blog Image */}
+        <Grid item xs={12} md={6}>
+          {blog.image && (
+            <img
+              src={bufferToDataUrl(blog.image.data)}
+              alt={blog.title}
+              style={{ marginBottom: '10px', maxWidth: '100%' }}
+            />
+          )}
+        </Grid>
 
-        {/* User Info */}
-        <Box mt={2} display='flex' justifyContent='space-between'>
-          <Typography variant='body1' color='black'>
-            Author: {blog.user?.username}
-          </Typography>
-          <Typography variant='body2' color='black'>
-            {new Date(blog.createdAt).toLocaleString()}
-          </Typography>
-        </Box>
+        {/* Right side - Blog Title, User Info, Horizontal Line, and Description */}
+        <Grid item xs={12} md={6}>
+          <Box textAlign={'center'}>
+            <Typography variant='h4' fontWeight='bold' color='#f8408f'>
+              {blog.title}
+            </Typography>
 
-        {/* Blog Image */}
-        {blog.image && (
-          <img
-            src={bufferToDataUrl(blog.image.data)}
-            alt={blog.title}
-            style={{ marginBottom: '10px', maxWidth: '100%' }}
-          />
-        )}
+            {/* User Info */}
+            <Box mt={2} display='flex' justifyContent='space-between'>
+              <Typography variant='body1' color='black'>
+                Blogger: {blog.user?.username}
+              </Typography>
+              <Typography variant='body2' color='black'>
+                {new Date(blog.createdAt).toLocaleString()}
+              </Typography>
+            </Box>
 
-        <Typography variant='body1'>{blog.description}</Typography>
-      </Box>
+            {/* Horizontal Line */}
+            <Divider sx={{ marginY: 2 }} />
+
+            {/* Blog Description */}
+            <Typography variant='body1' textAlign='left'>
+              {blog.description}
+            </Typography>
+          </Box>
+        </Grid>
+      </Grid>
     </Box>
   );
 };

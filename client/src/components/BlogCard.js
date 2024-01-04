@@ -66,7 +66,7 @@ const BlogCard = ({ title, description, image, username, time, id, isUser }) => 
       <CardHeader title={username} subheader={formattedDate} />
       <CardMedia component="img" height="194" src={getImageSrc()} alt={title} sx={{ objectFit: 'contain' }} />
       <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
-        <Typography variant="h6" color="text.secondary" sx={{ marginBottom: '8px' }}>
+        <Typography variant="h5" color="#f8408f" sx={{ marginBottom: '8px' }}>
           {title}
         </Typography>
         {/* <Typography variant="body2" color="text.secondary" sx={{ marginBottom: '10px' }}>

@@ -40,7 +40,7 @@ const SingleBlogCard = ({ title, description, image, username, time, id, isUser 
   };
 
   return (
-    <Card sx={{ width: '60%', margin: 'auto', mt: 2, padding: 2, boxShadow: '5px 5px 10px #ccc', ':hover:': { boxShadow: '10px 10px 20px #ccc' } }}>
+    <Card sx={{ width: '70%', margin: 'auto', mt: 2, padding: 2, boxShadow: '5px 5px 10px #ccc', ':hover:': { boxShadow: '10px 10px 20px #ccc' } }}>
       {isUser && (
         <Box display={'flex'}>
           <IconButton onClick={handleEdit} sx={{ marginLeft: 'auto' }}>
@@ -57,7 +57,7 @@ const SingleBlogCard = ({ title, description, image, username, time, id, isUser 
 
       )}
       <CardContent>
-        <Typography variant="h6" color="text.secondary">
+        <Typography variant="h5" color="#f8408f" sx={{ marginBottom: '8px' }}>
           {title}
         </Typography>
        {/*  <Typography variant="body2" color="text.secondary">
