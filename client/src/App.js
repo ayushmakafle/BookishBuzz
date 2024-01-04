@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Blogs from "./pages/Blogs";
+import UserBlog from "./components/UserBlog";
 
 function App() {
   return (
@@ -15,6 +16,8 @@ function App() {
       <Routes>
         <Route path = '/' element={<Blogs />}/>
         <Route path = '/blogs' element={<Blogs />}/>
+        <Route path = '/my-blogs' element={<UserBlog />}/>
+
         <Route path = '/login' element={<Login/>}/>
         <Route path = '/register' element={<Register/>}/>
       </Routes>
