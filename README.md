@@ -1,6 +1,7 @@
 # BookishBuzz
-Bookish Buzz is a web application developed using the MERN stack. 
-https://bookishbuzz.onrender.com/
+Bookish Buzz is a web application developed using the MERN stack.
+
+### https://bookishbuzz.onrender.com/
 
 ## Features
 - **User Authentication** Secure user authentication system allowing users to sign up and log in.
