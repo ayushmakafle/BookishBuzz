@@ -9,60 +9,60 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const Login = () => {
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-    // state
-    const [inputs, setInputs] = useState({
-        email: '',
-        password: '',
-        showPassword: false,
-    });
+  // state
+  const [inputs, setInputs] = useState({
+    email: '',
+    password: '',
+    showPassword: false,
+  });
 
-    // handle input change
-    const handleChange = (e) => {
-        setInputs((prevState) => ({
-            ...prevState,
-            [e.target.name]: e.target.value,
-        }));
-    };
+  // handle input change
+  const handleChange = (e) => {
+    setInputs((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
-    const handleClickShowPassword = () => {
-      setInputs((prevState) => ({
-        ...prevState,
-        showPassword: !prevState.showPassword,
-      }));
-    };
+  const handleClickShowPassword = () => {
+    setInputs((prevState) => ({
+      ...prevState,
+      showPassword: !prevState.showPassword,
+    }));
+  };
 
-    const handleMouseDownPassword = (event) => {
-      event.preventDefault();
-    };
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
-    // form handle
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-      try {
-        const { data, status } = await axios.post('/api/v1/user/login', {
-          username: inputs.name,
-          email: inputs.email,
-          password: inputs.password,
-        });
+  // form handle
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const { data, status } = await axios.post('/api/v1/user/login', {
+        username: inputs.name,
+        email: inputs.email,
+        password: inputs.password,
+      });
 
-        if (status === 200 && data.success) {
-          localStorage.setItem('userId', data?.user._id);
-          dispatch(authActions.login());
-          toast.success('User login successful');
-          navigate('/');
-        }
-      } catch (error) {
-        console.error(error);
-        if (error.response && error.response.status === 404) {
-          toast.error('Email is not registered');
-        } else {
-          toast.error('Login failed');
-        }
+      if (status === 200 && data.success) {
+        localStorage.setItem('userId', data?.user._id);
+        dispatch(authActions.login());
+        toast.success('User login successful');
+        navigate('/');
       }
-    };
+    } catch (error) {
+      console.error(error);
+      if (error.response && error.response.status === 404) {
+        toast.error('Email is not registered');
+      } else {
+        toast.error('Login failed');
+      }
+    }
+  };
 
 
   return (

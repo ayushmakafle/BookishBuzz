@@ -27,7 +27,7 @@ exports.getAllBlogsController = async (req, res) => {
             });
         }
 
-        // Convert Buffer data to data URI for each blog's image
+        // buffer data to data URI for image of each blog
         const blogsWithImageData = await Promise.all(
             blogs.map(async (blog) => {
                 if (blog.image && blog.image.data) {
@@ -57,7 +57,7 @@ exports.getAllBlogsController = async (req, res) => {
 // create blog
 exports.createBlogController = async (req, res) => {
     try {
-        // Use the upload middleware to handle file upload
+        //upload middleware to handle file upload
         uploadImage(req, res, async (err) => {
             if (err instanceof multer.MulterError) {
                 return res.status(400).json({
@@ -131,7 +131,7 @@ exports.updateBlogController = async (req, res) => {
         const { id } = req.params;
         const { title, description } = req.body;
 
-        // Use the upload middleware to handle file upload
+        //upload middleware to handle file upload
         uploadImage(req, res, async (err) => {
             if (err instanceof multer.MulterError) {
                 return res.status(400).json({
@@ -188,19 +188,19 @@ exports.getBlogByIdController = async (req, res) => {
             });
         }
 
-        // Convert Buffer data to data URI for the blog's image
+        // buffer data to data URI for image of blog
         let blogWithImageData = blog.toJSON();
         if (blogWithImageData.image && blogWithImageData.image.data) {
             if (typeof blogWithImageData.image.data === 'object') {
-                // Assume the image is already in the correct format
+                // if image already in required format
                 blogWithImageData.image = blogWithImageData.image.data;
             } else {
-                // Convert Buffer data to data URI
+                // buffer data to data URI
                 const dataUri = `data:${blogWithImageData.image.contentType};base64,${blogWithImageData.image.data.toString('base64')}`;
                 blogWithImageData.image = { dataUri };
             }
         } else {
-            blogWithImageData.image = {}; // Set empty object if no image data
+            blogWithImageData.image = {}; //empty object if no image data
         }
 
         return res.status(200).send({
@@ -268,7 +268,7 @@ exports.userBlogController = async (req, res) => {
             });
         }
 
-        // Convert Buffer data to data URI for each blog's image
+        // buffer data to data URI for each image
         const blogsWithImageData = await Promise.all(
             userBlog.blogs.map(async (blog) => {
                 if (blog.image && blog.image.data) {

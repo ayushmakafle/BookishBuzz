@@ -10,7 +10,7 @@ const CreateBlog = () => {
   const [inputs, setInputs] = useState({
     title: "",
     description: "",
-    image: null, // Initialize as null
+    image: null, 
   });
   const [currentImage, setCurrentImage] = useState(null);
 

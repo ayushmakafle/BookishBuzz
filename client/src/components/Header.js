@@ -10,24 +10,23 @@ const Header = () => {
 
     const navigate = useNavigate()
 
-    //global state
     let isLogin = useSelector((state) => state.isLogin)
     isLogin = isLogin || localStorage.getItem('userId')
     const dispatch = useDispatch()
     console.log(isLogin)
-    //states
+
     const [value,setValue]= useState()
 
     //logout 
     const handleLogout = () => {
-        try{
-            dispatch(authActions.logout())
-            toast.success('Logout successful')
-            navigate('/login')
-            localStorage.clear()
-        }catch(error){
-            console.log(error)
-        }
+      try{
+        dispatch(authActions.logout())
+        toast.success('Logout successful')
+        navigate('/login')
+        localStorage.clear()
+      }catch(error){
+        console.log(error)
+      }
     }
     
   return (
@@ -36,19 +35,21 @@ const Header = () => {
         <Toolbar>
           <Typography variant='h4' sx={{ flexGrow: 1, color: 'white' }}>
              <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-              Bookish Buzz
+                Bookish Buzz
             </Link>
           </Typography>
+          
           {isLogin && (
             <Box display={'flex'} marginLeft='auto' marginRight={'auto'}>
-            <Tabs textColor='inherit' value = {value}  onChange={(e,val) => setValue(val)}  indicatorColor='primary' // Set the default indicator color
-                sx={{ "& .MuiTabs-indicator": { backgroundColor: '#fcadcf' } }} // Customize the indicator color
+            <Tabs textColor='inherit' 
+              value = {value}  
+              onChange={(e,val) => setValue(val)}  
+              indicatorColor='primary' 
+              sx={{ "& .MuiTabs-indicator": { backgroundColor: '#fcadcf' } }}
             >
-                
-                <Tab label="Blogs" LinkComponent={Link} to='/blogs'/>
-                <Tab label="My Blogs" LinkComponent={Link} to='/my-blogs'/>
-                <Tab label="Create Blog" LinkComponent={Link} to='/create-blog'/>
-
+              <Tab label="Blogs" LinkComponent={Link} to='/blogs'/>
+              <Tab label="My Blogs" LinkComponent={Link} to='/my-blogs'/>
+              <Tab label="Create Blog" LinkComponent={Link} to='/create-blog'/>
             </Tabs>
           </Box>
           )}
@@ -56,16 +57,22 @@ const Header = () => {
           <Box display={'flex'} marginLeft='auto'>
             {!isLogin && (
                 <>
-                    <Button sx={{ margin: 1, color: 'white' }}
-                        LinkComponent={Link} 
-                        to ='/login'> Login</Button>
-                    <Button sx={{ margin: 1, color: 'white' }}
-                        LinkComponent={Link} 
-                        to ='/register'>Register</Button>
+                  <Button sx={{ margin: 1, color: 'white' }}
+                    LinkComponent={Link} 
+                    to ='/login'
+                  > Login</Button>
+                  <Button sx={{ margin: 1, color: 'white' }}
+                    LinkComponent={Link} 
+                    to ='/register'
+                  >Register</Button>
                 </>
             )}
+            
             {isLogin && (
-                <Button onClick={handleLogout} sx={{ margin: 1, color: 'white' }}>Logout</Button>)}
+              <Button onClick={handleLogout} sx={{ margin: 1, color: 'white' }}>
+                Logout
+              </Button>
+            )}
             
           </Box>
         </Toolbar>

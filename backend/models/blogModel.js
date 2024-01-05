@@ -11,7 +11,7 @@ const blogSchema = new mongoose.Schema({
     },
     image: {
         data: {
-            type: Buffer, // Use the Buffer type for storing binary data
+            type: Buffer, 
             required: [true, 'Image data is required']
         },
         contentType: {

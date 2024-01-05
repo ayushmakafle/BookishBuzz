@@ -36,8 +36,8 @@ const Blogs = () => {
               time={blog.createdAt}
               style={{
                 width: '60%',
-                height: '400px', // Set your preferred fixed height for the cards
-                objectFit: 'contain', // Ensure the image is fully visible
+                height: '400px', 
+                objectFit: 'contain',
                 marginBottom: '20px',
               }}
             />

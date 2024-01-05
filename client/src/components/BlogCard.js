@@ -1,23 +1,20 @@
-// BlogCard.js
 import React from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
-import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
 import moment from 'moment';
-import { Box, IconButton, Button } from '@mui/material'; // Include Button
+import { Box, IconButton, Button } from '@mui/material'; 
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-// ... (your other imports)
 
-const BlogCard = ({ title, description, image, username, time, id, isUser }) => {
+const BlogCard = ({ title, image, username, time, id, isUser }) => {
+  
   const navigate = useNavigate();
   const formattedDate = moment(time).format('YYYY-MM-DD HH:mm:ss');
 
@@ -69,9 +66,6 @@ const BlogCard = ({ title, description, image, username, time, id, isUser }) => 
         <Typography variant="h5" color="#f8408f" sx={{ marginBottom: '8px' }}>
           {title}
         </Typography>
-        {/* <Typography variant="body2" color="text.secondary" sx={{ marginBottom: '10px' }}>
-          {description}
-        </Typography> */}
         <Button variant="outlined" style={{ color: '#f8408f', borderColor: '#f8408f', marginLeft: 'auto' }} onClick={handleViewMore}>
           View More
         </Button>

@@ -18,14 +18,12 @@ function App() {
       <Header />
       <main>
         <ToastContainer />
-        {/* Use Routes component */}
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/my-blogs" element={<UserBlog />} />
           <Route path="/create-blog" element={<CreateBlog />} />
           <Route path="/blog-detail/:id" element={<BlogDetail />} />
-
           <Route path="/edit-blog-details/:id" element={<EditBlogDetails />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

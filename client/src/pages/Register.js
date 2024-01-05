@@ -60,9 +60,9 @@ const Register = () => {
       valid = false;
     }
 
-
-     const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[?.,!]).{8,}$/;
-     if (!inputs.password || !passwordRegex.test(inputs.password)) {
+    //validate password
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[?.,!]).{8,}$/;
+    if (!inputs.password || !passwordRegex.test(inputs.password)) {
       newErrors.password =
         'Password must have at least one uppercase letter, one number, one special character (?, ., or !), and be at least 8 characters long';
         valid = false;

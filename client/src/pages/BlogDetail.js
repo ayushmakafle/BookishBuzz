@@ -47,7 +47,6 @@ const BlogDetail = () => {
       marginTop='30px'
       marginBottom={'10px'}
     >
-      {/* Back button */}
       <IconButton
         onClick={() => navigate(-1)}
         style={{ alignSelf: 'flex-start', color: '#f8408f' }}
@@ -55,7 +54,6 @@ const BlogDetail = () => {
         <ArrowBackIcon />
       </IconButton>
 
-      {/* Blog Details */}
       <Grid container spacing={3}>
         {/* Left side - Blog Image */}
         <Grid item xs={12} md={6}>
@@ -68,14 +66,13 @@ const BlogDetail = () => {
           )}
         </Grid>
 
-        {/* Right side - Blog Title, User Info, Horizontal Line, and Description */}
+        {/* Right side - Blog Details*/}
         <Grid item xs={12} md={6}>
           <Box textAlign={'center'}>
             <Typography variant='h4' fontWeight='bold' color='#f8408f'>
               {blog.title}
             </Typography>
 
-            {/* User Info */}
             <Box mt={2} display='flex' justifyContent='space-between'>
               <Typography variant='body1' color='black'>
                 Blogger: {blog.user?.username}
@@ -85,10 +82,8 @@ const BlogDetail = () => {
               </Typography>
             </Box>
 
-            {/* Horizontal Line */}
             <Divider sx={{ marginY: 2 }} />
 
-            {/* Blog Description */}
             <Typography variant='body1' textAlign='left'>
               {blog.description}
             </Typography>

@@ -11,31 +11,28 @@ const EditBlogDetails = () => {
   const [inputs, setInputs] = useState({});
   const [currentImage, setCurrentImage] = useState(null);
 
-// Get blog details
-const getBlogDetail = async () => {
-  try {
-    const { data } = await axios.get(`/api/v1/blog/get-blog/${id}`);
-    if (data?.success) {
-      setBlog(data?.blog);
-      setInputs({
-        title: data.blog.title,
-        description: data.blog.description,
-        image: data?.blog.image?.dataUri || null,
-      });
+  // Get blog details
+  const getBlogDetail = async () => {
+    try {
+      const { data } = await axios.get(`/api/v1/blog/get-blog/${id}`);
+      if (data?.success) {
+        setBlog(data?.blog);
+        setInputs({
+          title: data.blog.title,
+          description: data.blog.description,
+          image: data?.blog.image?.dataUri || null,
+        });
 
-      // Ensure that dataUri is a string
-      const imageUri = typeof data?.blog.image?.dataUri === 'object'
+        // Ensure that dataUri is a string
+        const imageUri = typeof data?.blog.image?.dataUri === 'object'
         ? data.blog.image.dataUri.toString()
         : data?.blog.image?.dataUri || null;
-      setCurrentImage(imageUri);
+        setCurrentImage(imageUri);
+      }
+    } catch (error) {
+      console.log(error);
     }
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-
-
+  };
 
   useEffect(() => {
     getBlogDetail();
